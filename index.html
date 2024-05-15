@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Currency Converter</title>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #f2f2f2;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+    }
+    .converter {
+        background-color: #fff;
+        padding: 30px;
+        border-radius: 15px;
+        box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+        width: 400px;
+    }
+    .input-group {
+        margin-bottom: 20px;
+    }
+    .input-group label {
+        display: block;
+        margin-bottom: 5px;
+    }
+    .input-group input,
+    .input-group select {
+        width: 100%;
+        padding: 10px;
+        border-radius: 5px;
+        border: 1px solid #ccc;
+    }
+    .convert-btn {
+        padding: 12px 24px;
+        background-color: #007bff;
+        color: #fff;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+    .result {
+        font-size: 20px;
+        font-weight: bold;
+        margin-top: 20px;
+    }
+</style>
+</head>
+<body>
+<div class="converter">
+    <div class="input-group">
+        <label for="from">Amount to Convert</label>
+        <input type="number" id="from" placeholder="Enter amount">
+    </div>
+    <div class="input-group">
+        <label for="fromCurrency">From Currency</label>
+        <select id="fromCurrency">
+            <option value="USD">USD - United States Dollar</option>
+            <option value="EUR">EUR - Euro</option>
+            <option value="GBP">GBP - British Pound Sterling</option>
+            <option value="JPY">JPY - Japanese Yen</option>
+            <option value="AUD">AUD - Australian Dollar</option>
+            <option value="CAD">CAD - Canadian Dollar</option>
+            <option value="CHF">CHF - Swiss Franc</option>
+            <option value="CNY">CNY - Chinese Yuan</option>
+            <option value="INR">INR - Indian Rupee</option>
+            <option value="RUB">RUB - Russian Ruble</option>
+        </select>
+    </div>
+    <div class="input-group">
+        <label for="toCurrency">To Currency</label>
+        <select id="toCurrency">
+            <option value="USD">USD - United States Dollar</option>
+            <option value="EUR">EUR - Euro</option>
+            <option value="GBP">GBP - British Pound Sterling</option>
+            <option value="JPY">JPY - Japanese Yen</option>
+            <option value="AUD">AUD - Australian Dollar</option>
+            <option value="CAD">CAD - Canadian Dollar</option>
+            <option value="CHF">CHF - Swiss Franc</option>
+            <option value="CNY">CNY - Chinese Yuan</option>
+            <option value="INR">INR - Indian Rupee</option>
+            <option value="RUB">RUB - Russian Ruble</option>
+        </select>
+    </div>
+    <button class="convert-btn" onclick="convert()">Convert</button>
+    <div class="result" id="result"></div>
+</div>
+<script>
+    function convert() {
+        var amount = parseFloat(document.getElementById("from").value);
+        var fromCurrency = document.getElementById("fromCurrency").value;
+        var toCurrency = document.getElementById("toCurrency").value;
+        var convertedAmount = 0;
+        
+        // Conversion rates (just placeholders)
+        var rates = {
+            "USD": {
+                "USD": 1,
+                "EUR": 0.84,
+                "GBP": 0.72,
+                "JPY": 109.52,
+                "AUD": 1.31,
+                "CAD": 1.25,
+                "CHF": 0.91,
+                "CNY": 6.43,
+                "INR": 73.32,
+                "RUB": 72.38
+            },
+            "EUR": {
+                "USD": 1.19,
+                "EUR": 1,
+                "GBP": 0.86,
+                "JPY": 130.27,
+                "AUD": 1.58,
+                "CAD": 1.52,
+                "CHF": 1.11,
+                "CNY": 7.80,
+                "INR": 88.88,
+                "RUB": 88.20
+            },
+            "GBP": {
+                "USD": 1.39,
+                "EUR": 1.16,
+                "GBP": 1,
+                "JPY": 151.23,
+                "AUD": 1.83,
+                "CAD": 1.76,
+                "CHF": 1.29,
+                "CNY": 9.06,
+                "INR": 103.06,
+                "RUB": 102.29
+            },
+            "JPY": {
+                "USD": 0.0091,
+                "EUR": 0.0077,
+                "GBP": 0.0066,
+                "JPY": 1,
+                "AUD": 0.012,
+                "CAD": 0.012,
+                "CHF": 0.0088,
+                "CNY": 0.062,
+                "INR": 0.71,
+                "RUB": 0.71
+            },
+            "AUD": {
+                "USD": 0.76,
+                "EUR": 0.63,
+                "GBP": 0.55,
+                "JPY": 82.81,
+                "AUD": 1,
+                "CAD": 0.96,
+                "CHF": 0.70,
+                "CNY": 4.96,
+                "INR": 56.43,
+                "RUB": 55.91
+            },
+            "CAD": {
+                "USD": 0.80,
+                "EUR": 0.66,
+                "GBP": 0.57,
+                "JPY": 88.27,
+                "AUD": 1.04,
+                "CAD": 1,
+                "CHF": 0.73,
+                "CNY": 5.13,
+                "INR": 58.39,
+                "RUB": 57.85
+            },
+            "CHF": {
+                "USD": 1.09,
+                "EUR": 0.90,
+                "GBP": 0.78,
+                "JPY": 113.36,
+                "AUD": 1.43,
+                "CAD": 1.36,
+                "CHF": 1,
+                "CNY": 7.02,
+                "INR": 79.83,
+                "RUB": 79.16
+            },
+            "CNY": {
+                "USD": 0.16,
+                "EUR": 0.13,
+                "GBP": 0.11,
+                "JPY": 16.10,
+                "AUD": 0.20,
+                "CAD": 0.19,
+                "CHF": 0.14,
+                "CNY": 1,
+                "INR": 11.36,
+                "RUB": 11.26
+            },
+            "INR": {
+                "USD": 0.014,
+                "EUR": 0.011,
+                "GBP": 0.0097,
+                "JPY": 1.41,
+                "AUD": 0.018,
+                "CAD": 0.017,
+                "CHF": 0.013,
+                "CNY": 0.088,
+                "INR": 1,
+                "RUB": 0.99
+            },
+            "RUB": {
+                "USD": 0.014,
+                "EUR": 0.011,
+                "GBP": 0.0098,
+                "JPY": 1.41,
+                "AUD": 0.018,
+                "CAD": 0.017,
+                "CHF": 0.013,
+                "CNY": 0.088,
+                "INR": 1.01,
+                "RUB": 1
+            }
+        };
+        
+        if (!isNaN(amount)) {
+            if (rates.hasOwnProperty(fromCurrency) && rates[fromCurrency].hasOwnProperty(toCurrency)) {
+                convertedAmount = amount * rates[fromCurrency][toCurrency];
+                document.getElementById("result").innerText = amount + " " + fromCurrency + " = " + convertedAmount.toFixed(2) + " " + toCurrency;
+            } else {
+                document.getElementById("result").innerText = "Invalid currency selected.";
+            }
+        } else {
+            document.getElementById("result").innerText = "Please enter a valid amount.";
+        }
+    }
+</script>
+</body>
+</html>
